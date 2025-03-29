@@ -2,29 +2,29 @@ package Code;
 
 import java.util.Map;
 
-public class NaiveBayes {
+public class NaiveBayes implements Predictor{
 
     //attributes
 
     //creating attributes to store probabilities of the increase being yes or no
-    public double increaseYes;
-    public double increaseNo;
+    private double increaseYes;
+    private double increaseNo;
 
     //creating hashmap attributes to store the probabilities that a feature was yes or no
-    public Map<String, Double> revenueGrowthYes;
-    public Map<String, Double> revenueGrowthNo;
+    private Map<String, Double> revenueGrowthYes;
+    private Map<String, Double> revenueGrowthNo;
 
-    public Map<String, Double> profitMarginYes;
-    public Map<String, Double> profitMarginNo;
+    private Map<String, Double> profitMarginYes;
+    private Map<String, Double> profitMarginNo;
 
-    public Map<String, Double> marketSentimentYes;
-    public Map<String, Double> marketSentimentNo;
+    private Map<String, Double> marketSentimentYes;
+    private Map<String, Double> marketSentimentNo;
 
-    public Map<String, Double> debtLevelYes;
-    public Map<String, Double> debtLevelNo;
+    private Map<String, Double> debtLevelYes;
+    private Map<String, Double> debtLevelNo;
 
-    public double prob_Yes;
-    public double prob_No;
+    private double prob_Yes;
+    private double prob_No;
 
     public NaiveBayes(){//level 1 functionality with hard code probabilities from the dataset
         increaseYes = 0.61;
@@ -55,6 +55,6 @@ public class NaiveBayes {
                 * marketSentimentNo.get(marketSentiment) * debtLevelNo.get(debtLevel);
 
         //return based on which probability is greater
-        return (prob_Yes > prob_No) ? "Yes" : "No";
+        return (prob_Yes > prob_No) ? "Yes there will be a stock increase" : "No there wont be a stock increase";
     }
 }

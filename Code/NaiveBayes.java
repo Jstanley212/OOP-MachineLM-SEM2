@@ -7,54 +7,54 @@ public class NaiveBayes implements Predictor{
     //attributes
 
     //creating attributes to store probabilities of the increase being yes or no
-    private double increaseYes;
-    private double increaseNo;
+    private double hasViolationYes;
+    private double hasViolationNo;
 
     //creating hashmap attributes to store the probabilities that a feature was yes or no
-    private Map<String, Double> revenueGrowthYes;
-    private Map<String, Double> revenueGrowthNo;
+    private Map<String, Double> ageGroupYes;
+    private Map<String, Double> ageGroupNo;
 
-    private Map<String, Double> profitMarginYes;
-    private Map<String, Double> profitMarginNo;
+    private Map<String, Double> vehicleTypeYes;
+    private Map<String, Double> vehicleTypeNo;
 
-    private Map<String, Double> marketSentimentYes;
-    private Map<String, Double> marketSentimentNo;
+    private Map<String, Double> priorViolationYes;
+    private Map<String, Double> prioViolationsNo;
 
-    private Map<String, Double> debtLevelYes;
-    private Map<String, Double> debtLevelNo;
+    private Map<String, Double> maintenanceRecordYes;
+    private Map<String, Double> maintenanceRecordNo;
 
     private double prob_Yes;
     private double prob_No;
 
     public NaiveBayes(){//level 1 functionality with hard code probabilities from the dataset
-        increaseYes = 0.61;
-        increaseNo = 0.39;
+        hasViolationYes = 0.61;
+        hasViolationNo = 0.39;
 
         //probabilities for each label
-        revenueGrowthYes = Map.of("high", 0.85, "low", 0.15);
-        revenueGrowthNo = Map.of("high", 0.18, "low", 0.82);
+        ageGroupYes = Map.of("Young", 0.44, "Adult", 0.56);
+        ageGroupNo = Map.of("Young", 0.60, "Adult", 0.40);
 
-        profitMarginYes = Map.of("high", 0.72, "low", 0.28);
-        profitMarginNo = Map.of("high", 0.36, "low", 0.64);
+        vehicleTypeYes = Map.of("Car", 0.43, "Truck", 0.57);
+        vehicleTypeNo = Map.of("Car", 0.81, "Truck", 0.19);
 
-        marketSentimentYes = Map.of("Positive", 0.86, "Negative", 0.14);
-        marketSentimentNo = Map.of("Positive", 0.26, "Negative", 0.74);
+        priorViolationYes = Map.of("Yes", 0.77, "No", 0.23);
+        prioViolationsNo = Map.of("Yes", 0.01, "No", 0.99);
 
-        debtLevelYes = Map.of("high", 0.14, "low", 0.86);
-        debtLevelNo = Map.of("high", 0.83, "low", 0.17);
+        maintenanceRecordYes = Map.of("Good", 0.22, "Poor", 0.78);
+        maintenanceRecordNo = Map.of("Good", 0.97, "Poor", 0.03);
     }
 
 
     public String predict(String revenueGrowth, String profitMargin, String marketSentiment, String debtLevel){
 
-        //calculating if the probability based on the user entries if the stock will increase or decrease
-        prob_Yes = increaseYes * revenueGrowthYes.get(revenueGrowth) * profitMarginYes.get(profitMargin)
-                * marketSentimentYes.get(marketSentiment) * debtLevelYes.get(debtLevel);
+        //calculating if the probability based on the user entries if there is a violation
+        prob_Yes = hasViolationYes * ageGroupYes.get(revenueGrowth) * vehicleTypeYes.get(profitMargin)
+                * priorViolationYes.get(marketSentiment) * maintenanceRecordYes.get(debtLevel);
 
-        prob_No = increaseNo * revenueGrowthNo.get(revenueGrowth) * profitMarginNo.get(profitMargin)
-                * marketSentimentNo.get(marketSentiment) * debtLevelNo.get(debtLevel);
+        prob_No = hasViolationNo * ageGroupNo.get(revenueGrowth) * vehicleTypeNo.get(profitMargin)
+                * prioViolationsNo.get(marketSentiment) * maintenanceRecordNo.get(debtLevel);
 
         //return based on which probability is greater
-        return (prob_Yes > prob_No) ? "Yes there will be a stock increase" : "No there wont be a stock increase";
+        return (prob_Yes > prob_No) ? "Yes there is a violation" : "No there is no violation";
     }
 }

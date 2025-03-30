@@ -1,7 +1,6 @@
 package Code;
 
 import javax.swing.*;
-import java.awt.GridLayout;
 
 
 public class MainFrame {
@@ -24,14 +23,14 @@ public class MainFrame {
         input_class = new InputPanel();
 
         //adding all the dropdowns and buttons from the input class to the input panel
-        input_panel.add(input_class.getRevenue_label());
-        input_panel.add(input_class.getRevenueGrowth());
-        input_panel.add(input_class.getProfit_label());
-        input_panel.add(input_class.getProfitMargin());
-        input_panel.add(input_class.getMarket_label());
-        input_panel.add(input_class.getMarketSentiment());
-        input_panel.add(input_class.getDebt_label());
-        input_panel.add(input_class.getDebtLevel());
+        input_panel.add(input_class.getAge_label());
+        input_panel.add(input_class.getAgeGroup());
+        input_panel.add(input_class.getVehicle_label());
+        input_panel.add(input_class.getVehicleType());
+        input_panel.add(input_class.getViolation_label());
+        input_panel.add(input_class.getPriorViolation());
+        input_panel.add(input_class.getMaintenance_label());
+        input_panel.add(input_class.getMaintenanceRecord());
         input_panel.add(input_class.getSubmit_entries());
 
         //adding input panel to frame

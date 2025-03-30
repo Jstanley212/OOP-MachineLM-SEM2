@@ -13,7 +13,7 @@ public class DataLoader {
 
     //constructor
     public DataLoader(){
-        setFilename("stock_data_200_rows.csv");
+        setFilename("vehicle_has_violation.csv");
 
         connectFile(getFilename());
 

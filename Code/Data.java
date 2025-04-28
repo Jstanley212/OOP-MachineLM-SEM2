@@ -54,9 +54,11 @@ public class Data {
         return hasViolation;
     }
 
+    /*
     @Override
     public String toString() {
         return String.format("Age: %s, Vehicle: %s, Prior Violations: %s, Maintenance: %s, Has Violation: %s",
                 ageGroup, vehicleType, priorViolation, maintenanceRecord, hasViolation);
     }
+     */
 }

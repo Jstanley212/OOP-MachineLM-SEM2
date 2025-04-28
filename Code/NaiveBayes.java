@@ -68,6 +68,7 @@ public class NaiveBayes implements Predictor{
         int totalRecords = trainingData.size();
         //counter for violation count
         int violationYesCount = 0;
+        int violationNoCount = 0;
 
         // Count maps for each feature
         Map<String, Integer> ageYesCount = new HashMap<>();
@@ -81,13 +82,16 @@ public class NaiveBayes implements Predictor{
 
         //counting all occurrences
         for (Data record : trainingData) {
+            //if yes increment all features yes counts
             if (record.getHasViolation().equals("Yes")) {
                 violationYesCount++;
                 incrementCount(ageYesCount, record.getAgeGroup());
                 incrementCount(vehicleYesCount, record.getVehicleType());
                 incrementCount(priorViolationYesCount, record.getPriorViolation());
                 incrementCount(maintenanceYesCount, record.getMaintenanceRecord());
+            //else no increment all features no count
             } else {
+                violationNoCount++;
                 incrementCount(ageNoCount, record.getAgeGroup());
                 incrementCount(vehicleNoCount, record.getVehicleType());
                 incrementCount(priorViolationNoCount, record.getPriorViolation());
@@ -97,7 +101,7 @@ public class NaiveBayes implements Predictor{
 
         //calculating probabilities
         hasViolationYes = (double) violationYesCount / totalRecords;
-        hasViolationNo = (double) (totalRecords - violationYesCount) / totalRecords;
+        hasViolationNo = (double) violationNoCount / totalRecords;
 
         //converting counts to probabilities
         ageGroupYes = convertToProbabilities(ageYesCount, violationYesCount);
@@ -110,18 +114,26 @@ public class NaiveBayes implements Predictor{
         maintenanceRecordNo = convertToProbabilities(maintenanceNoCount, totalRecords - violationYesCount);
     }
 
+    //counts the occurrences of how many times yes or no occurs for each feature using a map
     private void incrementCount(Map<String, Integer> map, String key) {
+        //gets the current count of the key if it exists, if not 0, adds 1 to the key and stoes it
         map.put(key, map.getOrDefault(key, 0) + 1);
     }
 
+    //converts the counts into probabilities, takes in count map and total record
     private Map<String, Double> convertToProbabilities(Map<String, Integer> countMap, int total) {
+        //initialising new map for probabilities
         Map<String, Double> probMap = new HashMap<>();
+
+        //loop goes through each entry in the count map, gets entry and stores one at a time to perform a calculation on
         for (Map.Entry<String, Integer> entry : countMap.entrySet()) {
+            //enters the probability into map
             probMap.put(entry.getKey(), (double) entry.getValue() / total);
         }
         return probMap;
     }
 
+    //method for rounding decimal places
     public static double roundAvoid(double value, int places) {
         double scale = Math.pow(10, places);
         return Math.round(value * scale) / scale;

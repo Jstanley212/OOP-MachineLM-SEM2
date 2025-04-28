@@ -3,6 +3,7 @@ package Code;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
 public class InputPanel extends BasePanel implements ActionListener{
 
@@ -27,8 +28,30 @@ public class InputPanel extends BasePanel implements ActionListener{
     private JLabel violation_label;
     private JLabel maintenance_label;
 
+    //naive bayes classifier
+    private NaiveBayes naiveBayesClassifier;
+
     //level 1 naive bayes classifier
-    NaiveBayes level1_NaiveBayes = new NaiveBayes();
+    //NaiveBayes level1_NaiveBayes = new NaiveBayes();
+
+    //creating training button
+    private JButton train_button;
+    private DataLoader dataLoader;
+
+    //if model has been trained or not by user
+    private boolean modelTrained = false;
+
+    //constructor
+    public InputPanel(NaiveBayes classifier) {
+        //calling constructor
+        super();
+
+        this.naiveBayesClassifier = classifier;
+
+        //initialize dataLoader
+        this.dataLoader = new DataLoader();
+        initializeComponents();
+    }
 
     @Override
     public void initializeComponents() {
@@ -51,6 +74,10 @@ public class InputPanel extends BasePanel implements ActionListener{
         //button to submit the text fields and an actionListener attached
         submit_button = new JButton("Predict");
         submit_button.addActionListener(this);
+
+        //initializing training button
+        train_button = new JButton("Train");
+        train_button.addActionListener(this);
     }
 
     //methods
@@ -81,12 +108,17 @@ public class InputPanel extends BasePanel implements ActionListener{
     public JLabel getMaintenance_label(){
         return maintenance_label;
     }
+    public JButton getTrainButton() { return train_button; }
 
 
 
     //actionPerformed method to take in the users entries in the JComboBoxes when the submit button is pressed
     public void actionPerformed(ActionEvent e){
         if (e.getSource() == submit_button){
+            if (!modelTrained){
+                showMessage("Please train model first", "Alert");
+                return;
+            }
 
             String selectedAge = (String) ageGroup.getSelectedItem();
             String selectedVehicle = (String) vehicleType.getSelectedItem();
@@ -99,8 +131,16 @@ public class InputPanel extends BasePanel implements ActionListener{
             } else  {
                 //option pane to display whether the user should invest in a stock
                 showMessage(//entering the users entries into the level 1 naive bayes classifier to see if they should invest
-                        level1_NaiveBayes.predict(selectedAge, selectedVehicle, selectedViolation, selectedMaintenance),
-                        "Alert");
+                        naiveBayesClassifier.predict(selectedAge, selectedVehicle, selectedViolation, selectedMaintenance),
+                        "Result");
+            }
+        } else if (e.getSource() == train_button) {
+            try {
+                naiveBayesClassifier.train(dataLoader.loadingData());
+                modelTrained = true;
+                showMessage("Model Trained", "Alert");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
             }
         }
     }

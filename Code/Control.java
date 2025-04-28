@@ -1,5 +1,6 @@
 package Code;
 
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -10,6 +11,13 @@ import java.util.Scanner;
 
 public class Control {
     public static void main(String[] args) throws IOException {
+
+        /*
+        DataLoader loader = new DataLoader();
+        loader.loadingData();
+        loader.printDataset();
+        */
+
 
         MainFrame GUI = new MainFrame();
 

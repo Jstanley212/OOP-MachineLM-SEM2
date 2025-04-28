@@ -4,5 +4,5 @@ package Code;
 
 public interface Predictor {
     //method to allow for the user inputs to be entered in the NaiveBayes class and calculations to be done
-    String predict(String revenueGrowth, String profitMargin, String marketSentiment, String debtLevel);
+    String predict(String ageGroup, String vehicleType, String priorViolation, String maintenanceRecord);
 }

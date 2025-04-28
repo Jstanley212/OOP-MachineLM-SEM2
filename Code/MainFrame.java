@@ -1,6 +1,7 @@
 package Code;
 
 import javax.swing.*;
+import java.io.IOException;
 
 
 public class MainFrame {
@@ -15,12 +16,16 @@ public class MainFrame {
     private InputPanel input_class;
 
 
+
     //constructor
     public MainFrame(){
 
         main_screen = new JFrame("Primary Window");
         input_panel = new JPanel();
-        input_class = new InputPanel();
+
+        //initializing input panel and model
+        NaiveBayes classifier = new NaiveBayes();
+        input_class = new InputPanel(classifier);
 
         //adding all the dropdowns and buttons from the input class to the input panel
         input_panel.add(input_class.getAge_label());
@@ -31,6 +36,7 @@ public class MainFrame {
         input_panel.add(input_class.getPriorViolation());
         input_panel.add(input_class.getMaintenance_label());
         input_panel.add(input_class.getMaintenanceRecord());
+        input_panel.add(input_class.getTrainButton());
         input_panel.add(input_class.getSubmit_entries());
 
         //adding input panel to frame

@@ -1,7 +1,9 @@
 package Code;
 
 import java.io.*;
+import java.nio.Buffer;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 //class to read the csv file and to write to the csv file
@@ -9,16 +11,20 @@ import java.util.Scanner;
 public class DataLoader {
     //attributes for file names
     private String filename;
-    public File theFile;
+    private File theFile;
+    private List<Data> dataset;
+
 
     //constructor
-    public DataLoader(){
+    public DataLoader() {
         setFilename("vehicle_has_violation.csv");
 
         connectFile(getFilename());
+        dataset = new ArrayList<>();
 
-        readFile();
+        //readFile();
     }
+
 
     //methods
 
@@ -31,44 +37,77 @@ public class DataLoader {
     }
 
     //connect string to actual file
-    public void connectFile(String filename){
+    public void connectFile(String filename) {
         theFile = new File(filename);
     }
 
-    //adding data from file into arrayList so it can be displayed
-    public ArrayList<String> readFile(){
-        ArrayList<String> roleList = new ArrayList<String>();
+    //method to load the data from the csv file
+    public List<Data> loadingData() throws IOException{
+        //clear existing data
+        dataset.clear();
 
-        try {
-            Scanner myReader = new Scanner(theFile);
-            myReader.useDelimiter(",");
+        try (BufferedReader reader = new BufferedReader(new FileReader(theFile))) {
 
-            while (myReader.hasNextLine()) {
-                String data = myReader.next();
-                roleList.add(data);
-                //System.out.println(data);
+            String line;
+            // flag to skip header
+            boolean isHeader = true;
+
+            while ((line = reader.readLine()) != null) {
+                if (isHeader) {
+                    isHeader = false;
+                    // skip row
+                    continue;
+                }
+
+                // enter enters all the lines as objects
+                Data record = parseDataLine(line);
+                if(record != null) {
+                    dataset.add(record);
+                }
+
             }
-            myReader.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
         }
 
-        return roleList;
-
+        return dataset;
     }
 
-    //method to write to the csv file
-    public void write(String input) throws IOException {
+    //method to seperate each line
+    private Data parseDataLine(String line) {
 
-        //filewrite and printwrite to enter values into file
-        FileWriter fw = new FileWriter(theFile, true);
+        if (line == null || line.trim().isEmpty()) {
+            return null;
+        }
 
-        PrintWriter p1 = new PrintWriter(fw);
+        //split entries at the comma
+        String[] values = line.split(",");
+        if (values.length != 5) {
+            // checking if correct amount of fields
+            System.err.println("Invalid data on line " + line);
+            return null;
+        }
 
-        //input entered from control
-        p1.println(input);
+        // initialising dataclass object
+        Data dataclass = new Data();
 
-        p1.close();
+        //enters the 5 values in the object
+        dataclass.setAgeGroup(values[0].trim());
+        dataclass.setVehicleType(values[1].trim());
+        dataclass.setPriorViolation(values[2].trim());
+        dataclass.setMaintenanceRecord(values[3].trim());
+        dataclass.setHasViolation(values[4].trim());
+
+
+        return dataclass;
     }
+
+    public void printDataset() {
+        System.out.println("Dataset contains " + dataset.size() + " records:");
+        System.out.println("----------------------------------------");
+        for (int i = 0; i < dataset.size(); i++) {
+            System.out.println("Record " + (i + 1) + ": " + dataset.get(i));
+        }
+        System.out.println("----------------------------------------");
+    }
+
+
 }

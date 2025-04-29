@@ -114,7 +114,7 @@ public class NaiveBayes implements Predictor{
         maintenanceRecordNo = convertToProbabilities(maintenanceNoCount, totalRecords - violationYesCount);
     }
 
-    // method to read certain number of rows
+    //overloaded method to read certain number of rows
     public void train(int start, int end, List<Data> trainingData) {
 
         //total amount of records
@@ -203,7 +203,17 @@ public class NaiveBayes implements Predictor{
         prob_No = hasViolationNo * ageGroupNo.get(ageGroup) * vehicleTypeNo.get(vehicleType)
                 * priorViolationNo.get(priorViolation) * maintenanceRecordNo.get(maintenanceRecord);
 
+        //big fix of the math, probs were not being normalized
+
+        double total = prob_Yes + prob_No;
+        double normalizedYes = prob_Yes / total;
+        double normalizedNo = prob_No / total;
+
         //return based on which probability is greater
-        return (prob_Yes > prob_No) ? "Yes there is a violation, " + roundAvoid(prob_Yes, 3) : "No there is no violation, " + roundAvoid(prob_No, 3);
+        return (normalizedYes >= normalizedNo) ?
+                "Yes there is a violation, " + roundAvoid(normalizedYes, 3) :
+                "No there is no violation, " + roundAvoid(normalizedNo, 3);
+
+        //return (prob_Yes > prob_No) ? "Yes there is a violation, " + roundAvoid(prob_Yes, 3) : "No there is no violation, " + roundAvoid(prob_No, 3);
     }
 }

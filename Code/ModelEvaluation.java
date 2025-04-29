@@ -116,7 +116,7 @@ public class ModelEvaluation {
             // split the string at the comma
             String[] parts = prediction.split(",");
             String predictedClass = parts[0];  // will be Yes or No
-            double probability = Double.parseDouble(parts[1].trim());  // Parse the probability
+            double probability = Double.parseDouble(parts[1].trim());  // parse the probability
 
             //print the prediction details
             results.append(String.format("Age: %s\tVehicle: %s\tPrior: %s\tMaintenance: %s\tActual: %s\tPredicted: %s\tProb: %.3f%n",

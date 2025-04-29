@@ -17,9 +17,13 @@ public class DataLoader {
 
     //constructor
     public DataLoader() {
+        //filepath
         setFilename("vehicle_has_violation.csv");
 
+        //connecting the filename
         connectFile(getFilename());
+
+        //arraylist to store the loaded data
         dataset = new ArrayList<>();
 
         //readFile();
@@ -46,21 +50,27 @@ public class DataLoader {
         //clear existing data
         dataset.clear();
 
+        // buffered reader for more efficient file writing
         try (BufferedReader reader = new BufferedReader(new FileReader(theFile))) {
 
+            // string variable to store each line
             String line;
-            // flag to skip header
+            // boolean true to allow the code to skip headers
             boolean isHeader = true;
 
+            //while a line in the file is not null, execute
             while ((line = reader.readLine()) != null) {
+                // if isHeader is true
                 if (isHeader) {
+                    // changes to false since past header row
                     isHeader = false;
-                    // skip row
+
                     continue;
                 }
 
-                // enter enters all the lines as objects
+                // enter enters all the lines as objects into Data class, using parseDataLine method
                 Data record = parseDataLine(line);
+                // if record is not null, add it to dataset
                 if(record != null) {
                     dataset.add(record);
                 }
@@ -74,19 +84,24 @@ public class DataLoader {
     //method to seperate each line
     private Data parseDataLine(String line) {
 
+        // if line is null or if line is only filled with spaces
         if (line == null || line.trim().isEmpty()) {
+            //so return null so to not add it to dataset
             return null;
         }
 
-        //split entries at the comma
+        //splits entries at the comma and enter into values
         String[] values = line.split(",");
+
+        //if values doesnt have 5 entries
         if (values.length != 5) {
-            // checking if correct amount of fields
+            // checking if correct amount of fields, and telling user where error is
             System.err.println("Invalid data on line " + line);
+            // return null so to not add it to dataset
             return null;
         }
 
-        // initialising dataclass object
+        // initialising dataclass object in Data
         Data dataclass = new Data();
 
         //enters the 5 values in the object
@@ -96,7 +111,7 @@ public class DataLoader {
         dataclass.setMaintenanceRecord(values[3].trim());
         dataclass.setHasViolation(values[4].trim());
 
-
+        // return object so the features can be added dataset
         return dataclass;
     }
 

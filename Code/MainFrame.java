@@ -46,7 +46,7 @@ public class MainFrame {
         input_panel.add(input_class.getSubmit_entries());
 
         // creating training panel
-        JPanel training_container = new JPanel();
+        //JPanel training_container = new JPanel();
         training_panel = new TrainingDataPanel(classifier);
 
         //adding training data panel dropdowns and buttons

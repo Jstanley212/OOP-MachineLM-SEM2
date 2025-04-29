@@ -209,11 +209,21 @@ public class NaiveBayes implements Predictor{
         double normalizedYes = prob_Yes / total;
         double normalizedNo = prob_No / total;
 
+        // Format the probability with 3 decimal places
+        String prob = String.format("%.3f", normalizedYes);
+
+        return (normalizedYes >= normalizedNo) ?
+                "Yes," + prob :
+                "No," + String.format("%.3f", normalizedNo);
+
+        /*
         //return based on which probability is greater
         return (normalizedYes >= normalizedNo) ?
                 "Yes there is a violation, " + roundAvoid(normalizedYes, 3) + "." :
                 "No there is no violation, " + roundAvoid(normalizedNo, 3) + ".";
 
         //return (prob_Yes > prob_No) ? "Yes there is a violation, " + roundAvoid(prob_Yes, 3) : "No there is no violation, " + roundAvoid(prob_No, 3);
+
+         */
     }
 }

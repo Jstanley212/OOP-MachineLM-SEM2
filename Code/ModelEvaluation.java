@@ -112,10 +112,19 @@ public class ModelEvaluation {
                     d.getMaintenanceRecord()
             );
 
+            /*
             //getting the predicted class
             String predictedClass = prediction.startsWith("Yes") ? "Yes" : "No";
             //getting the prediction probability
+            predictedClass = predictedClass.replace(".", "");
             double probability = Double.parseDouble(prediction.split(",")[1].trim());
+
+             */
+
+            // Split the string at the comma
+            String[] parts = prediction.split(",");
+            String predictedClass = parts[0];  // Will be "Yes" or "No"
+            double probability = Double.parseDouble(parts[1].trim());  // Parse the probability
 
             //print the prediction details
             results.append(String.format("Age: %s\tVehicle: %s\tPrior: %s\tMaintenance: %s\tActual: %s\tPredicted: %s\tProb: %.3f%n",

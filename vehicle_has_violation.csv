@@ -199,3 +199,6 @@ Adult,Car,No,Good,No
 Young,Truck,No,Poor,Yes
 Adult,Truck,Yes,Poor,Yes
 Young,Car,No,Good,No
+Young,Car,Yes,Good,Yes
+Young,Car,Yes,Good,No
+Young,Car,Yes,Good,Yes

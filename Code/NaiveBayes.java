@@ -114,9 +114,63 @@ public class NaiveBayes implements Predictor{
         maintenanceRecordNo = convertToProbabilities(maintenanceNoCount, totalRecords - violationYesCount);
     }
 
+    // method to read certain number of rows
+    public void train(int start, int end, List<Data> trainingData) {
+
+        //total amount of records
+        int totalRecords = trainingData.size();
+        //counter for violation count
+        int violationYesCount = 0;
+        int violationNoCount = 0;
+
+        // Count maps for each feature
+        Map<String, Integer> ageYesCount = new HashMap<>();
+        Map<String, Integer> ageNoCount = new HashMap<>();
+        Map<String, Integer> vehicleYesCount = new HashMap<>();
+        Map<String, Integer> vehicleNoCount = new HashMap<>();
+        Map<String, Integer> priorViolationYesCount = new HashMap<>();
+        Map<String, Integer> priorViolationNoCount = new HashMap<>();
+        Map<String, Integer> maintenanceYesCount = new HashMap<>();
+        Map<String, Integer> maintenanceNoCount = new HashMap<>();
+
+        //counting all occurrences
+        for (int i = start; i < end; i++){
+            Data record = trainingData.get(i);
+            //if yes increment all features yes counts
+            if (record.getHasViolation().equals("Yes")) {
+                violationYesCount++;
+                incrementCount(ageYesCount, record.getAgeGroup());
+                incrementCount(vehicleYesCount, record.getVehicleType());
+                incrementCount(priorViolationYesCount, record.getPriorViolation());
+                incrementCount(maintenanceYesCount, record.getMaintenanceRecord());
+                //else no increment all features no count
+            } else {
+                violationNoCount++;
+                incrementCount(ageNoCount, record.getAgeGroup());
+                incrementCount(vehicleNoCount, record.getVehicleType());
+                incrementCount(priorViolationNoCount, record.getPriorViolation());
+                incrementCount(maintenanceNoCount, record.getMaintenanceRecord());
+            }
+        }
+
+        //calculating probabilities
+        hasViolationYes = (double) violationYesCount / totalRecords;
+        hasViolationNo = (double) violationNoCount / totalRecords;
+
+        //converting counts to probabilities
+        ageGroupYes = convertToProbabilities(ageYesCount, violationYesCount);
+        ageGroupNo = convertToProbabilities(ageNoCount, totalRecords - violationYesCount);
+        vehicleTypeYes = convertToProbabilities(vehicleYesCount, violationYesCount);
+        vehicleTypeNo = convertToProbabilities(vehicleNoCount, totalRecords - violationYesCount);
+        priorViolationYes = convertToProbabilities(priorViolationYesCount, violationYesCount);
+        priorViolationNo = convertToProbabilities(priorViolationNoCount, totalRecords - violationYesCount);
+        maintenanceRecordYes = convertToProbabilities(maintenanceYesCount, violationYesCount);
+        maintenanceRecordNo = convertToProbabilities(maintenanceNoCount, totalRecords - violationYesCount);
+    }
+
     //counts the occurrences of how many times yes or no occurs for each feature using a map
     private void incrementCount(Map<String, Integer> map, String key) {
-        //gets the current count of the key if it exists, if not 0, adds 1 to the key and stoes it
+        //gets the current count of the key if it exists, if not 0, adds 1 to the key and stores it
         map.put(key, map.getOrDefault(key, 0) + 1);
     }
 

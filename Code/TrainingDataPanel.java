@@ -79,6 +79,7 @@ public class TrainingDataPanel extends BasePanel implements ActionListener{
 
     }
 
+    //button for adding data
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == add_button) {
@@ -88,6 +89,7 @@ public class TrainingDataPanel extends BasePanel implements ActionListener{
         }
     }
 
+    //method to add data
     private void addTrainingData() {
 
         //gets the values entered in the combo boxes by the user and stores them in String newData
@@ -134,7 +136,7 @@ public class TrainingDataPanel extends BasePanel implements ActionListener{
             out.println(newData);
 
             JOptionPane.showMessageDialog(this,
-                    "Training data added successfully!",
+                    "Training data added successfully",
                     "Success",
                     JOptionPane.INFORMATION_MESSAGE);
 
@@ -146,6 +148,7 @@ public class TrainingDataPanel extends BasePanel implements ActionListener{
         }
     }
 
+    //method to update model with the new data
     private void updateModel() {
         try {
             naiveBayesClassifier.train(dataLoader.loadingData());

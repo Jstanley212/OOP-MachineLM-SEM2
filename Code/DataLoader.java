@@ -115,16 +115,4 @@ public class DataLoader {
         return dataclass;
     }
 
-    /*
-    // used to test if dataLoader was taking in the data
-    public void printDataset() {
-        System.out.println("Dataset contains " + dataset.size() + " records:");
-        System.out.println("----------------------------------------");
-        for (int i = 0; i < dataset.size(); i++) {
-            System.out.println("Record " + (i + 1) + ": " + dataset.get(i));
-        }
-        System.out.println("----------------------------------------");
-    }*/
-
-
 }

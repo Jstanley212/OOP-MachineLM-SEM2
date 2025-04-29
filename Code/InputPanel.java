@@ -134,8 +134,10 @@ public class InputPanel extends BasePanel implements ActionListener{
                         naiveBayesClassifier.predict(selectedAge, selectedVehicle, selectedViolation, selectedMaintenance),
                         "Result");
             }
+            //button to train model
         } else if (e.getSource() == train_button) {
             try {
+                //sends loaded data to the classifier to be trained by the train method
                 naiveBayesClassifier.train(dataLoader.loadingData());
                 modelTrained = true;
                 showMessage("Model Trained", "Alert");

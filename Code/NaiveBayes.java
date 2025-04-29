@@ -193,7 +193,7 @@ public class NaiveBayes implements Predictor{
         return Math.round(value * scale) / scale;
     }
 
-
+    //method to return if the predicted is a yes or no violation with the probability
     public String predict(String ageGroup, String vehicleType, String priorViolation, String maintenanceRecord){
 
         //calculating if the probability based on the user entries if there is a violation
@@ -211,8 +211,8 @@ public class NaiveBayes implements Predictor{
 
         //return based on which probability is greater
         return (normalizedYes >= normalizedNo) ?
-                "Yes there is a violation, " + roundAvoid(normalizedYes, 3) :
-                "No there is no violation, " + roundAvoid(normalizedNo, 3);
+                "Yes there is a violation, " + roundAvoid(normalizedYes, 3) + "." :
+                "No there is no violation, " + roundAvoid(normalizedNo, 3) + ".";
 
         //return (prob_Yes > prob_No) ? "Yes there is a violation, " + roundAvoid(prob_Yes, 3) : "No there is no violation, " + roundAvoid(prob_No, 3);
     }

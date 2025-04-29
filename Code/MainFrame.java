@@ -1,6 +1,7 @@
 package Code;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 
 
@@ -18,6 +19,9 @@ public class MainFrame {
     //creating trainingDataPanel
     private TrainingDataPanel training_panel;
 
+    private ModelEvaluation evaluator;
+
+
 
     //constructor
     public MainFrame(){
@@ -27,7 +31,7 @@ public class MainFrame {
         input_panel = new JPanel();
 
         //initialising JTabbedPane to toggle between predict and adding new data
-        JTabbedPane two_Panes = new JTabbedPane();
+        JTabbedPane three_Panes = new JTabbedPane();
 
         //initializing input panel and model
         NaiveBayes classifier = new NaiveBayes();
@@ -64,15 +68,46 @@ public class MainFrame {
         training_panel.add(training_panel.getAdd_button());
         training_panel.add(training_panel.getUpdate_button());
 
-        //adding input panel to frame
-        two_Panes.addTab("Predict",input_panel);
-        //adding training_panel to frame
-        two_Panes.addTab("Add Data",training_panel);
+        evaluator = new ModelEvaluation();
 
-        main_screen.add(two_Panes);
+        //creating evaluation button
+        JPanel evaluationPanel = getEvaluationPanel();
+
+        //adding evaluation tab
+        three_Panes.addTab("Model Evaluation", evaluationPanel);
+
+        //adding input panel to frame
+        three_Panes.addTab("Predict",input_panel);
+        //adding training_panel to frame
+        three_Panes.addTab("Add Data",training_panel);
+
+
+        main_screen.add(three_Panes);
 
         //setting size of frame and setting it to visible
         main_screen.setSize(600, 400);
         main_screen.setVisible(true);
     }
+
+    private JPanel getEvaluationPanel() {
+        JButton evaluateButton = new JButton("Evaluate Model");
+        evaluateButton.addActionListener(e -> {
+            try {
+                evaluator.evaluate_model();
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(main_screen,
+                        "Error evaluating model: " + ex.getMessage(),
+                        "Error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        //create panel with button and results area
+        JPanel evaluationPanel = new JPanel(new BorderLayout());
+        evaluationPanel.add(evaluateButton, BorderLayout.NORTH);
+        evaluationPanel.add(evaluator.getResultsPane(), BorderLayout.CENTER);
+        return evaluationPanel;
+    }
+
+
 }

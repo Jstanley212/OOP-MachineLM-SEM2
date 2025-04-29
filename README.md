@@ -99,3 +99,6 @@ Running the project
 2. Compile all Java files in the Code directory
 3. Run the Control class from Control.java class
 
+What I would add:
+-If I had more time to do this project I would like to improve the look of the GUI, so the results are displayed better to the user.
+-I would also of liked to add the option to add multiple rows of data to the set instead of one at a time.
